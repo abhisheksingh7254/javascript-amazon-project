@@ -25,7 +25,7 @@
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -41,7 +41,7 @@
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div id="added" class="added-to-cart js-added-to-cart-${product.id}">
             <image src="images/icons/checkmark.png">
             Added
           </div>
@@ -55,11 +55,13 @@
         // console.log(productHTML);
       });
       document.querySelector('.js-products-grid').innerHTML=productHTML;
+
+      const addedMessageTimeouts={};                  //to store the setTimeOut returned id for each product
 //Add to Cart button Functional >>>>
       document.querySelectorAll('.js-add-to-cart')
         .forEach((button)=>{
           button.addEventListener('click',()=>{
-            const productId=button.dataset.productId;
+            const {productId}=button.dataset;         //const productId=button.dataset.productId; ---->Destructuring
 
             let matchingItem;
             cart.forEach((item)=>{
@@ -67,21 +69,47 @@
                 matchingItem=item;
               }
               });
+              //<select> quantity
+              const quantitySelector=document.querySelector(
+                `.js-quantity-selector-${productId}`
+              );
+              // const quantity = quantitySelector.value; 
+              //it return value as string..so covert it as number using-- Number() method>
+              const quantity=Number(quantitySelector.value);
+              // console.log(quantity);
+
               if(matchingItem){
-                matchingItem.quantity+=1;
+                matchingItem.quantity+=quantity;
               }else{
-                cart.push({
-                  productId:productId,
-                  quantity:1
-                });
+                cart.push({productId,quantity}); //{productId:productId,quantity:quantity} --->Destructuring
               }
               
               let cartQuantity=0;
               cart.forEach((item)=>{
                 cartQuantity+=item.quantity;
+                // console.log(cart);
+                
               });
+              const addedMessage = document.querySelector(
+                `.js-added-to-cart-${productId}`
+              );
+              addedMessage.classList.add('js-added-visible');
+              setTimeout(()=>{
+                const prevTimeoutId=addedMessageTimeouts[productId];
+                if(prevTimeoutId){
+                  clearTimeout(prevTimeoutId)
+                }
+
+                const timeOutId=setTimeout(()=>{
+                  addedMessage.classList.remove('js-added-visible');
+                },2000);
+                addedMessageTimeouts[productId]=timeOutId;
+                console.log(addedMessageTimeouts[productId]);
+              });
+
+              
               document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
 
-              // console.log(cart);
+             
           });
         });
