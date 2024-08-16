@@ -1,5 +1,8 @@
-//HTML genreted through JAVASCRIPT....
 import {cart} from '../data/cart.js';
+import { products } from '../data/products.js';
+
+
+//HTML genreted through JAVASCRIPT....
 let productHTML = "";
 products.forEach((product) => {
   productHTML += `<div class="product-container">
