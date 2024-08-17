@@ -63,14 +63,13 @@ document.querySelector(".js-products-grid").innerHTML = productHTML;
 
 const addedMessageTimeouts = {}; //to store the setTimeOut returned id for each product
 //Add to Cart button Functional >>>>
-document.querySelectorAll(".js-add-to-cart").forEach((button) => {
-  button.addEventListener("click", () => {
-    const { productId } = button.dataset; //const productId=button.dataset.productId; ---->Destructuring
 
-    let matchingItem;
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
+
+function addToCart(productId){
+  let matchingItem;
+    cart.forEach((cartItem) => {
+      if (productId === cartItem.productId) {
+        matchingItem = cartItem;
       }
     });
     //<select> quantity
@@ -88,28 +87,45 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
       cart.push({ productId, quantity }); //{productId:productId,quantity:quantity} --->Destructuring
     }
 
-    let cartQuantity = 0;
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
+}
+
+function updateCartQuantity(){
+  let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
       // console.log(cart);
     });
-    const addedMessage = document.querySelector(
-      `.js-added-to-cart-${productId}`
-    );
-    addedMessage.classList.add("js-added-visible");
-    setTimeout(() => {
-      const prevTimeoutId = addedMessageTimeouts[productId];
-      if (prevTimeoutId) {
-        clearTimeout(prevTimeoutId);
-      }
+    // const addedMessage = document.querySelector(
+    //   `.js-added-to-cart-${productId}`
+    // );
+    // addedMessage.classList.add("js-added-visible");
+    // setTimeout(() => {
+    //   const prevTimeoutId = addedMessageTimeouts[productId];
+    //   if (prevTimeoutId) {
+    //     clearTimeout(prevTimeoutId);
+    //   }
 
-      const timeOutId = setTimeout(() => {
-        addedMessage.classList.remove("js-added-visible");
-      }, 2000);
-      addedMessageTimeouts[productId] = timeOutId;
-      // console.log(addedMessageTimeouts[productId]);
-    });
+    //   const timeOutId = setTimeout(() => {
+    //     addedMessage.classList.remove("js-added-visible");
+    //   }, 2000);
+    //   addedMessageTimeouts[productId] = timeOutId;
+    //   // console.log(addedMessageTimeouts[productId]);
+    // });
 
     document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+    
+}
+
+
+
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    const { productId } = button.dataset; //const productId=button.dataset.productId; ---->Destructuring
+
+    addToCart(productId);
+    
+    updateCartQuantity();
+
+    
   });
 });
