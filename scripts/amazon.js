@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart,addToCart} from '../data/cart.js';
 import { products } from '../data/products.js';
 
 
@@ -65,29 +65,7 @@ const addedMessageTimeouts = {}; //to store the setTimeOut returned id for each 
 //Add to Cart button Functional >>>>
 
 
-function addToCart(productId){
-  let matchingItem;
-    cart.forEach((cartItem) => {
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
-      }
-    });
-    //<select> quantity
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`
-    );
-    // const quantity = quantitySelector.value;
-    //it return value as string..so covert it as number using-- Number() method>
-    const quantity = Number(quantitySelector.value);
-    // console.log(quantity);
 
-    if (matchingItem) {
-      matchingItem.quantity += quantity;
-    } else {
-      cart.push({ productId, quantity }); //{productId:productId,quantity:quantity} --->Destructuring
-    }
-
-}
 
 function updateCartQuantity(){
   let cartQuantity = 0;
