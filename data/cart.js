@@ -1,4 +1,4 @@
-export const cart=[
+export let cart=[
   {
     productId:"e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     quantity:2
@@ -31,3 +31,15 @@ export function addToCart(productId){
     }
 
 }
+//how to remove an item from cart ,,here i m using product id of the cartItem to select the specific item from list of cart[]
+
+export function removeCartItem(productId){
+  const newCart=[];
+  cart.forEach((cartItem)=>{
+
+    if(cartItem.productId !== productId){
+      newCart.push(cartItem);
+  }});
+  cart=newCart;
+
+  }
